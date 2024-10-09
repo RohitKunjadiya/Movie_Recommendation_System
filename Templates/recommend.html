@@ -1,0 +1,58 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<div class="container mt-5">
+
+    <!-- Search Form -->
+    <div class="row justify-content-center mb-4">
+        <div class="col-md-30">
+            <form action="/recommend_movies" method="POST" class="card p-4 shadow-sm">
+                <div class="mb-3">
+                    <label for="movieSelect" class="form-label"><strong>Select a Movie:</strong></label>
+                    <select name="user_input" id="movieSelect" class="form-select" aria-label="Select a movie">
+                        <option value="" disabled selected>-- Choose a Movie --</option>
+                        {% for item in mlist %}
+                            <option value="{{ item }}">{{ item }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-4 d-grid">
+                    <button type="submit" class="btn btn-primary">Get Recommendations</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Error Message -->
+    {% if error_message %}
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="alert alert-danger text-center" role="alert">
+                    {{ error_message }}
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
+    <!-- Recommendations -->
+    {% if data %}
+        <div class="row">
+            {% for i in data %}
+                <div class="col-md-3" style="margin-top:30px"> <!-- Each movie card takes up 3 columns -->
+
+                        <div class="card-body">
+                            <div>
+                                <img class="card-img-top" style="width: 100%; height: auto;" src="{{ i[4] }}" alt="Poster of {{ i[0] }}">
+                                <h5 class="card-title"><b>{{ i[0] }}</b></h5>
+                                <p class="card-text mb-1"><b>Director:</b> {{ i[1] }}</p> <!-- Reduced bottom margin -->
+                                <p class="card-text mb-1"><b>Cast:</b> {{ i[2] }}</p> <!-- Reduced bottom margin -->
+                                <p class="card-text mb-1"><b>Genre:</b> {{ i[3] }}</p> <!-- Reduced bottom margin -->
+                            </div>
+                        </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+</div>
+
+{% endblock content %}
